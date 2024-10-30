@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Formulaire API",
+    "version": "1.0.0",
+    "description": "API for managing formulaire data structure."
+  },
+  "paths": {
+    "/formulaire": {
+      "post": {
+        "summary": "Create a new formulaire",
+        "description": "Creates a new formulaire entry with provided data",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Formulaire"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Formulaire created successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Formulaire": {
+        "type": "object",
+        "properties": {
+          "enTete": {
+            "$ref": "#/components/schemas/EnTete"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Section"
+            }
+          },
+          "autorisationsTransport": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutorisationTransport"
+            }
+          }
+        },
+        "required": ["enTete", "sections", "autorisationsTransport"]
+      },
+      "EnTete": {
+        "type": "object",
+        "properties": {
+          "codeEntete": { "type": "integer", "example": 1 },
+          "codeTypeFormulaire": { "type": "string", "pattern": "^[A-Z]{2}$", "example": "DT" },
+          "numeroUniteSequence": { "type": "integer", "example": 12 },
+          "numeroSequenceFormulaire": { "type": "integer", "example": 345678 },
+          "numeroUniteSequenceFormulaireRemplace": { "type": "integer", "example": 1234 },
+          "numeroSequenceFormulaireRemplace": { "type": "integer", "example": 567890 },
+          "numeroUniteCompilation": { "$ref": "#/components/schemas/NumeroUniteCompilation" },
+          "numeroEchantillon": { "type": "integer", "example": 123 },
+          "matriculeMesureur": { "type": "integer", "example": 456789 },
+          "dateFinMesurage": { "type": "string", "pattern": "^[0-9]{8}$", "example": "20231021" },
+          "nombreSections": { "type": "integer", "example": 3 }
+        },
+        "required": [
+          "codeEntete", "codeTypeFormulaire", "numeroUniteSequence", "numeroSequenceFormulaire",
+          "numeroUniteSequenceFormulaireRemplace", "numeroSequenceFormulaireRemplace",
+          "numeroUniteCompilation", "numeroEchantillon", "matriculeMesureur", "dateFinMesurage", "nombreSections"
+        ]
+      },
+      "NumeroUniteCompilation": {
+        "type": "object",
+        "properties": {
+          "uniteAdm": { "type": "string", "example": "UUU" },
+          "projet": { "type": "string", "example": "PPPPP" },
+          "caaf": { "type": "string", "example": "CCCCCC" },
+          "numeroSeq": { "type": "string", "example": "NN" },
+          "valideur": { "type": "string", "example": "V" }
+        },
+        "required": ["uniteAdm", "projet", "caaf", "numeroSeq", "valideur"]
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "codeEntete": { "type": "integer", "example": 2 },
+          "numeroSection": { "type": "integer", "example": 1 },
+          "codeEssence": { "type": "integer", "example": 123 },
+          "codeQualite": { "type": "string", "example": "A" },
+          "corpsSection": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CorpsSection" }
+          },
+          "tigesMesureesDenombrees": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TigeMesureeDenombree" }
+          }
+        },
+        "required": ["codeEntete", "numeroSection", "codeEssence", "codeQualite", "corpsSection"]
+      },
+      "CorpsSection": {
+        "type": "object",
+        "properties": {
+          "codeEnteteCorps": { "type": "integer", "example": 3 },
+          "diametreTige": { "type": "integer", "example": 123 },
+          "nombreTigesBrut": { "type": "integer", "example": 150 }
+        },
+        "required": ["codeEnteteCorps", "diametreTige", "nombreTigesBrut"]
+      },
+      "TigeMesureeDenombree": {
+        "type": "object",
+        "properties": {
+          "codeEnteteTiges": { "type": "integer", "example": 4 },
+          "numeroPile": { "type": "integer", "example": 1 },
+          "nombreTigesMesurees": { "type": "integer", "example": 50 }
+        },
+        "required": ["codeEnteteTiges", "numeroPile", "nombreTigesMesurees"]
+      },
+      "AutorisationTransport": {
+        "type": "object",
+        "properties": {
+          "codeEnteteTransport": { "type": "integer", "example": 5 },
+          "numeroUniteSequenceAutorisation": { "type": "integer", "example": 7890 },
+          "numeroSequenceFormulaireAutorisation": { "type": "integer", "example": 123456 },
+          "dateArrivee": { "type": "string", "pattern": "^[0-9]{8}$", "example": "20231022" }
+        },
+        "required": [
+          "codeEnteteTransport", "numeroUniteSequenceAutorisation", "numeroSequenceFormulaireAutorisation", "dateArrivee"
+        ]
+      }
+    }
+  }
+}
